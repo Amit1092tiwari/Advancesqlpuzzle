@@ -1,7 +1,7 @@
 # Advanced SQL Puzzles & Enterprise Database Engineering
 
-[![SQL Engine CI](https://github.com/amitt/Advancesqlpuzzle/actions/workflows/sql-ci.yml/badge.svg)](https://github.com/amitt/Advancesqlpuzzle/actions/workflows/sql-ci.yml)
-[![Pages Deployment](https://github.com/amitt/Advancesqlpuzzle/actions/workflows/static.yml/badge.svg)](https://github.com/amitt/Advancesqlpuzzle/actions/workflows/static.yml)
+[![SQL Engine CI](https://github.com/Amit1092tiwari/Advancesqlpuzzle/actions/workflows/sql-ci.yml/badge.svg)](https://github.com/Amit1092tiwari/Advancesqlpuzzle/actions/workflows/sql-ci.yml)
+[![Pages Deployment](https://github.com/Amit1092tiwari/Advancesqlpuzzle/actions/workflows/static.yml/badge.svg)](https://github.com/Amit1092tiwari/Advancesqlpuzzle/actions/workflows/static.yml)
 [![Platform](https://img.shields.io/badge/Platform-Microsoft%20SQL%20Server%20%7C%20Azure%20SQL%20%7C%20Databricks-blue.svg)](https://azure.microsoft.com/)
 [![Dialect](https://img.shields.io/badge/Dialect-T--SQL%20%7C%20ANSI--SQL-orange.svg)](#)
 [![Puzzles](https://img.shields.io/badge/Puzzles-55%20Solved-brightgreen.svg)](#55-advanced-sql-puzzles-directory)
@@ -15,7 +15,7 @@ All puzzle solutions and database routines are authored in **Microsoft SQL Serve
 ## 🌐 Interactive Web Portal
 
 This repository deploys an interactive, searchable portal via GitHub Pages:
-👉 **[Launch Advanced SQL Puzzles Web Directory](https://amitt.github.io/Advancesqlpuzzle/)**
+👉 **[Launch Advanced SQL Puzzles Web Directory](https://amit1092tiwari.github.io/Advancesqlpuzzle/)**
 
 ---
 
@@ -115,7 +115,7 @@ The puzzles test deep problem-solving skills across complex relational algorithm
 ### Running Puzzles Locally
 1. Clone the repository:
    ```bash
-   git clone https://github.com/amitt/Advancesqlpuzzle.git
+   git clone https://github.com/Amit1092tiwari/Advancesqlpuzzle.git
    cd Advancesqlpuzzle
    ```
 2. Open `Advanced SQL Puzzles/Advanced SQL Puzzles DDL.sql` in SSMS or Azure Data Studio and execute the script to create the temporary tables and sample data.
