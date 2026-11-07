@@ -2,41 +2,55 @@
 Scott Peters
 https://advancedsqlpuzzles.com
 Creating a Calendar Table Example Usage
+
+Principal Architecture Modernization:
+- Idempotent schema creation (DROP TABLE IF EXISTS).
+- High-performance set-based tally table population (eliminating procedural WHILE loop).
+- CREATE OR ALTER VIEW for idempotent view deployment.
 */----------------------------------------
 
-CREATE TABLE CalendarDays
+DROP TABLE IF EXISTS dbo.CalendarDays;
+GO
+
+CREATE TABLE dbo.CalendarDays
 (
-DateKey INT NOT NULL PRIMARY KEY,
-CalendarDate DATE NOT NULL
+    DateKey INT NOT NULL PRIMARY KEY,
+    CalendarDate DATE NOT NULL
 );
 GO
 
 -----------------------------------------------------
--- Populate the CalendarTable
+-- Populate the CalendarTable (Set-Based Tally Table Generator)
 DECLARE @vStartDate DATE = '2020-01-01';
-WHILE @vStartDate <> '2021-01-01'
-    BEGIN
-    INSERT INTO CalendarDays(DateKey, CalendarDate) VALUES
-        (
-        CONVERT(INT,CONVERT(VARCHAR, @vStartDate, 112)),
-        @vStartDate
-        );
-    SET @vStartDate = DATEADD(DAY,1,@vStartDate);
-    END;
+DECLARE @vEndDate   DATE = '2030-12-31';
 
---Basic usage with CROSS APPLY
-SELECT  ct.*
-FROM    CalendarDays cd CROSS APPLY
-        FnReturnCalendarTable(cd.CalendarDate) ct
-WHERE   cd.DateKey = ct.DateKey;
+WITH Tally(N) AS
+(
+    SELECT TOP (DATEDIFF(DAY, @vStartDate, @vEndDate) + 1)
+        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1
+    FROM sys.all_objects a
+    CROSS JOIN sys.all_objects b
+)
+INSERT INTO dbo.CalendarDays (DateKey, CalendarDate)
+SELECT 
+    CONVERT(INT, CONVERT(VARCHAR(8), DATEADD(DAY, N, @vStartDate), 112)) AS DateKey,
+    DATEADD(DAY, N, @vStartDate) AS CalendarDate
+FROM Tally;
 GO
 
---Create a view
-ALTER VIEW VwCalendarTable AS
+-- Basic usage with CROSS APPLY
 SELECT  ct.*
-FROM    CalendarDays cd CROSS APPLY
-        FnReturnCalendarTable(cd.CalendarDate) ct
-WHERE   cd.DateKey = ct.DateKey;
+FROM    dbo.CalendarDays cd 
+CROSS APPLY dbo.FnReturnCalendarTable(cd.CalendarDate) ct;
 GO
 
-SELECT * FROM VwCalendarTable;
+-- Create or Alter the View for seamless enterprise consumption
+CREATE OR ALTER VIEW dbo.VwCalendarTable AS
+SELECT  ct.*
+FROM    dbo.CalendarDays cd 
+CROSS APPLY dbo.FnReturnCalendarTable(cd.CalendarDate) ct;
+GO
+
+-- Query the Calendar View
+SELECT * FROM dbo.VwCalendarTable;
+GO

@@ -10,8 +10,8 @@ You will need to input a schema name and table name see comments in the code
 The profile can take several minutes to run, even on small tables.
 For large tables, limit the dataset via 
 1) the @vWhereClause variable.
-2) the @vColumnsToProfiles variable
-3) comment out unneeded output columns (for example 'SapleValue', or 'PercentInteger'
+2) the @vColumnsToProfile variable
+3) comment out unneeded output columns (for example 'SampleValue', or 'PercentInteger')
 
 Rule of thumb, limit the data first to a small set and check performance.
 
@@ -41,7 +41,7 @@ DECLARE @vTableName VARCHAR(255) = 'columns'--------------------------UserDefine
 DECLARE @vWhereClause VARCHAR(MAX) = 'WHERE 1=1';------------------------UserDefined, limit your data via a WHERE clause.
 
 --ColumnsToProfile
-DECLARE @vColumnsToProfile TABLE (ColumnName VARCHAR(MAX))---------------UserDefined, limit to speicific columns in your table (See INSERT statement below)
+DECLARE @vColumnsToProfile TABLE (ColumnName VARCHAR(MAX))---------------UserDefined, limit to specific columns in your table (See INSERT statement below)
 
 --To profile all columns, set the @vColumnsToProfile variable to NULL/empty.
 --To profile a selected list of columns, then use the following INSERT statement.

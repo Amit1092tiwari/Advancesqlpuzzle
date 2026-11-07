@@ -30,7 +30,7 @@ Advancesqlpuzzle/
 ├── Advanced SQL Puzzles/
 │   ├── Advanced SQL Puzzles DDL.sql        # Schemas and sample data for Puzzles #1 - #55
 │   ├── Advanced SQL Puzzles Solutions.sql  # Multi-strategy solutions for Puzzles #1 - #55
-│   ├── Advanced SQL Puzzles.pdf            # Problem descriptions & specifications
+│   ├── ADVANCED_SQL_PUZZLES.md             # Complete specifications for 55 puzzles + 11 bonus puzzles
 │   └── readme.md
 ├── Database Tips and Tricks/
 │   ├── Calendar Table/             # High-performance calendar dimension function (ITVF)
@@ -39,8 +39,8 @@ Advancesqlpuzzle/
 │   ├── Subtracting Two Dates/      # Nanosecond-precision interval difference routines
 │   └── readme.md
 ├── Database Writings/
-│   ├── Advanced SQL Joins/         # Mechanics of SQL joins & NULL handling (PDF + SQL)
-│   ├── Behavior Of Nulls/          # Three-valued logic & boolean evaluation (PDF + SQL)
+│   ├── Advanced SQL Joins/         # Mechanics of SQL joins & NULL handling (Markdown Guide + SQL)
+│   ├── Behavior Of Nulls/          # Three-valued logic & boolean evaluation (Markdown Guide + SQL)
 │   ├── Database Concepts And Components/ # Engine internals, storage, ACID, & indexing
 │   └── readme.md
 ├── Microsoft Azure/
