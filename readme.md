@@ -47,6 +47,9 @@ Advancesqlpuzzle/
 │   ├── Data Factory Metadata Demo/ # ADF metadata auditing & TVP ingestion pipeline
 │   ├── Databricks Spark Hive Demo/ # Spark SQL, Hive metastore, & Delta Lake integration
 │   └── readme.md
+├── Multi-Dialect Solutions/        # Cross-engine guides (T-SQL, PostgreSQL, Snowflake, BigQuery, DuckDB)
+│   ├── MULTI_DIALECT_GUIDE.md      # Paradigm analysis (Gaps & Islands, MATCH_RECOGNIZE, QUALIFY)
+│   └── readme.md
 ├── .gitattributes                  # EOL normalization & binary tracking
 ├── index.html                      # Modern, searchable web landing page
 └── readme.md                       # Main architectural documentation

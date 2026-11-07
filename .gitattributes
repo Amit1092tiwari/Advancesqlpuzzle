@@ -15,7 +15,5 @@
 *.txt text eol=lf
 
 # Binary Assets (Git LFS compatible)
-*.pdf binary
-*.pptx binary
 *.dbc binary
 
