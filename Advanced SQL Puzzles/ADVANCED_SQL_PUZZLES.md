@@ -447,3 +447,4 @@ Simulate the Monty Hall problem with $N$ doors, $G$ goats/prizes, $C$ contestant
 Given 4 vehicles (1-seat motorcycle, 2-seat sidecar, 3-seat golf cart, 4-seat car) and 10 people (5 adults, 5 children), with the constraint that only an adult can drive each vehicle:  
 Calculate and generate all 7,200 valid seating allocations:
 $$\text{Arrangements} = \frac{5!}{1!} \times \frac{6!}{3! \times 2! \times 1! \times 0!} = 7,200$$
+

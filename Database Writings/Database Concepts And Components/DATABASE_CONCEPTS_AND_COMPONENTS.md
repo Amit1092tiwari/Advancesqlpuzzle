@@ -644,3 +644,4 @@ Rules governing character sorting, casing (`CI` vs `CS`), and accent sensitivity
 A severe security vulnerability where untrusted user input is concatenated directly into executable dynamic SQL strings, enabling attackers to bypass authentication or execute arbitrary database commands.  
 **Mitigation:** Parameterized queries, ORM mapping, and stored procedures with strict input escaping.  
 📖 [Wikipedia: SQL Injection](https://en.wikipedia.org/wiki/SQL_injection)
+

@@ -584,3 +584,4 @@ ORDER BY Total_Mutual_Friends DESC;
 - **Restricted Cartesian Products:** Every join begins as a Cartesian product restricted by the `ON` clause, followed by optional outer row injection.
 - **`ON` vs `WHERE`:** Filters in `ON` determine matching eligibility; filters in `WHERE` determine final row retention.
 - **Performance:** Prefer Window Functions over self-joins for running totals, and utilize `NOT EXISTS` over `NOT IN` to prevent NULL hazards.
+

@@ -272,3 +272,4 @@ To review table version history and audit logs directly inside Databricks:
 ```sql
 DESCRIBE HISTORY demo.Suppliers;
 ```
+

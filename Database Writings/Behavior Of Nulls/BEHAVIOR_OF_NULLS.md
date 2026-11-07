@@ -533,3 +533,4 @@ Output:
 3. **Use Filtered Unique Indexes:** If business logic requires uniqueness among non-null values while permitting multiple missing values, implement `WHERE Column IS NOT NULL` filtered indexes.
 4. **Distinguish `COUNT(*)` from `COUNT(col)`:** Ensure metrics and KPIs intentionally declare whether they count all physical records or strictly populated values.
 5. **Enforce `SET ANSI_NULLS ON`:** Standardize on ANSI compliance across all stored procedures, functions, and session connections.
+

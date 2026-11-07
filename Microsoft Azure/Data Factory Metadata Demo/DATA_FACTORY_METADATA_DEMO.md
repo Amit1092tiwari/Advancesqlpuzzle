@@ -277,3 +277,4 @@ FROM   demo.CustomersMetadata;
 | `System_PipelineRunId` | `87fae8e9-492b-40b1-b9d0-d581989fa605` |
 | `System_PipelineTriggerType`| `ScheduleTrigger` |
 | `System_PipelineTriggerName`| `DailyIngestTrigger` |
+
