@@ -32,3 +32,4 @@ This directory provides comprehensive cross-engine translations, optimizer compa
    - PostgreSQL `FILTER (WHERE ...)`.
    - BigQuery / Snowflake `COUNTIF()`.
    - T-SQL `SUM(CASE WHEN ...)`.
+
