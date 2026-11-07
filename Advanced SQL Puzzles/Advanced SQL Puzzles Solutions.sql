@@ -232,7 +232,7 @@ SELECT  CustomerID,
         NULL AS work,
         NULL AS home
 FROM    #PhoneDirectory
-WHERE   [Type] = 'CellPhone'
+WHERE   [Type] = 'Cellular'
 UNION
 SELECT  CustomerID,
         NULL Cellular,
@@ -249,10 +249,19 @@ FROM    #PhoneDirectory
 WHERE   [Type] = 'Home'
 )
 SELECT  CustomerID,
-        MAX(Cellular),
-        MAX(Work),
-        MAX(Home)
+        MAX(Cellular) AS Cellular,
+        MAX(Work) AS Work,
+        MAX(Home) AS Home
 FROM    cte_PhoneNumbers
+GROUP BY CustomerID;
+
+--Solution 4
+--Conditional Aggregation (Standard ANSI SQL Approach)
+SELECT  CustomerID,
+        MAX(CASE WHEN [Type] = 'Cellular' THEN PhoneNumber END) AS Cellular,
+        MAX(CASE WHEN [Type] = 'Work' THEN PhoneNumber END) AS Work,
+        MAX(CASE WHEN [Type] = 'Home' THEN PhoneNumber END) AS Home
+FROM    #PhoneDirectory
 GROUP BY CustomerID;
 
 /*----------------------------------------------------
@@ -273,9 +282,9 @@ PRIMARY KEY (Workflow, StepNumber)
 GO
 
 INSERT INTO #WorkflowSteps VALUES
-('Alpha',1,'7/2/2018'),('Alpha',2,'7/2/2018'),('Alpha',3,'7/1/2018'),
-('Bravo',1,'6/25/2018'),('Bravo',2,NULL),('Bravo',3,'6/27/2018'),
-('Charlie',1,NULL),('Charlie',2,'7/1/2018');
+('Alpha',1,'2018-07-02'),('Alpha',2,'2018-07-02'),('Alpha',3,'2018-07-01'),
+('Bravo',1,'2018-06-25'),('Bravo',2,NULL),('Bravo',3,'2018-06-27'),
+('Charlie',1,NULL),('Charlie',2,'2018-07-01');
 GO
 
 SELECT  Workflow
@@ -1759,10 +1768,21 @@ INSERT INTO #SampleData VALUES
 (1),(2),(3),(4),(5),(6),(7),(8),(9),(10);
 GO
 
-SELECT  IntegerValue,
-        IntegerValue%2,
-        (CASE WHEN IntegerValue%2 > 0 OR IntegerValue <= 2 THEN 'Prime Number' ELSE NULL END) AS PrimeNumber
-FROM    #SampleData;
+--Set-Based Prime Number Sieve
+WITH cte_Divisors AS
+(
+SELECT  a.IntegerValue AS N,
+        b.IntegerValue AS Divisor
+FROM    #SampleData a INNER JOIN
+        #SampleData b ON b.IntegerValue >= 2 AND b.IntegerValue < a.IntegerValue
+WHERE   a.IntegerValue > 1
+)
+SELECT  a.IntegerValue,
+        (CASE WHEN a.IntegerValue > 1 AND NOT EXISTS
+                (SELECT 1 FROM cte_Divisors b WHERE b.N = a.IntegerValue AND b.N % b.Divisor = 0)
+              THEN 'Prime Number'
+              ELSE NULL END) AS PrimeNumber
+FROM    #SampleData a;
 
 /*----------------------------------------------------
 Answer to Puzzle #40

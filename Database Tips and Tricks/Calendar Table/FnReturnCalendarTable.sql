@@ -1,4 +1,4 @@
-CREATE FUNCTION FnReturnCalendarTable
+CREATE OR ALTER FUNCTION dbo.FnReturnCalendarTable
 /*
 Scott Peters
 https://advancedsqlpuzzles.com
@@ -45,7 +45,7 @@ SELECT
         ,CAST(DATEADD (dd, -1, DATEADD(qq, DATEDIFF(qq, 0, @vInputDate) +1, 0)) AS DATE) AS LastDayOfQuarter
         -------------------------------------------------
         ,DATENAME(MONTH,@vInputDate) AS MonthLongName
-        ,FORMAT(@vInputDate,'MMM') AS MonthShortName
+        ,LEFT(DATENAME(MONTH, @vInputDate), 3) AS MonthShortName
 
         ,(CASE  WHEN MONTH(@vInputDate) IN (1,4,7,10) THEN 1
                 WHEN MONTH(@vInputDate) IN (2,5,8,11) THEN 2
@@ -60,8 +60,8 @@ SELECT
         ,(DATEDIFF(dd, DATEADD(qq, DATEDIFF(qq, 0, @vInputDate), 0), @vInputDate) / 7) + 1 AS WeekOfQuarter
         --------------------------------------------------
         ,DATENAME(dw, @vInputDate) AS DayOfWeekName
-        ,FORMAT(@vInputDate,'ddd') AS DayOfWeekNameShort
-        ,DATEPART(dw,GETDATE()) AS DayOfWeekNumber
+        ,LEFT(DATENAME(dw, @vInputDate), 3) AS DayOfWeekNameShort
+        ,DATEPART(dw, @vInputDate) AS DayOfWeekNumber
         ,CAST(CASE WHEN DATEPART(dw, @vInputDate) IN (2,3,4,5,6) THEN 1 ELSE 0 END AS BIT) AS IsWeekday
         ,DATEDIFF(d, DATEADD(qq, DATEDIFF(qq, 0, @vInputDate), 0), @vInputDate) + 1 AS DayOfQuarter
         ,DAY(@vInputDate) AS [DayOfMonth]
@@ -81,13 +81,13 @@ SELECT
         ,(CASE  WHEN MONTH(@vInputDate) BETWEEN 1 AND 9 THEN MONTH(@vInputDate) + 3
                         WHEN MONTH(@vInputDate) BETWEEN 10 AND 12 THEN MONTH(@vInputDate) - 9
                         END) AS GovtFiscalMonth
-        ,(CASE  WHEN    YEAR(@vInputDate) % 4 <> 0 AND
+        ,(CASE  WHEN    NOT ((YEAR(@vInputDate) % 4 = 0 AND YEAR(@vInputDate) % 100 <> 0) OR (YEAR(@vInputDate) % 400 = 0)) AND
                         DATEPART(y, @vInputDate) BETWEEN 1 AND 273 THEN  DATEPART(y, @vInputDate) + 92
-                WHEN    YEAR(@vInputDate) % 4 <> 0 AND
+                WHEN    NOT ((YEAR(@vInputDate) % 4 = 0 AND YEAR(@vInputDate) % 100 <> 0) OR (YEAR(@vInputDate) % 400 = 0)) AND
                         DATEPART(y, @vInputDate) >= 274 THEN DATEPART(y, @vInputDate) - 273
-                WHEN    YEAR(@vInputDate) % 4 = 0  AND
+                WHEN    ((YEAR(@vInputDate) % 4 = 0 AND YEAR(@vInputDate) % 100 <> 0) OR (YEAR(@vInputDate) % 400 = 0))  AND
                         DATEPART(y, @vInputDate) BETWEEN 1 AND 274 THEN DATEPART(y, @vInputDate) + 92
-                WHEN    YEAR(@vInputDate) % 4 = 0 AND
+                WHEN    ((YEAR(@vInputDate) % 4 = 0 AND YEAR(@vInputDate) % 100 <> 0) OR (YEAR(@vInputDate) % 400 = 0)) AND
                         DATEPART(y, @vInputDate) >= 275 THEN DATEPART(y, @vInputDate) - 274 END) AS GovtFiscalDay
             ----------------------------------------------------------------------------------------------------
             ----------------------------------------------------------------------------------------------------

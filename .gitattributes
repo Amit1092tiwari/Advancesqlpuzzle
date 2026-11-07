@@ -1,0 +1,21 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# SQL files
+*.sql text eol=crlf
+
+# Markdown and YAML
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.html text eol=lf
+
+# Data files
+*.csv text eol=lf
+*.txt text eol=lf
+
+# Binary Assets (Git LFS compatible)
+*.pdf binary
+*.pptx binary
+*.dbc binary
+

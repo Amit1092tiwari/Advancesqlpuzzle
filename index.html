@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced SQL Puzzles & Database Engineering</title>
+    <meta name="description" content="55 Advanced SQL Puzzles, database tips, tricks, and Azure engineering patterns by Scott Peters.">
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --text-bright: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --badge-bg: #21262d;
+            --badge-text: #58a6ff;
+            --code-bg: #090d13;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            color: var(--text-bright);
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .header-links a {
+            display: inline-block;
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            color: var(--accent);
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+            color: var(--text-bright);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .card h2 {
+            color: var(--text-bright);
+            font-size: 1.35rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .card-links a {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .card-links a:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--text-bright);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .puzzles-list {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-bright);
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .puzzle-item {
+            background: var(--bg-color);
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .puzzle-item span.num {
+            color: var(--accent);
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Advanced SQL Puzzles</h1>
+            <p>55 Advanced T-SQL puzzles, enterprise database utilities, profiling scripts, and Azure cloud data engineering architectures.</p>
+            <div class="header-links">
+                <a href="https://github.com/amitt/Advancesqlpuzzle" target="_blank" rel="noopener">GitHub Repository</a>
+                <a href="https://advancedsqlpuzzles.com" target="_blank" rel="noopener">Official Website</a>
+                <a href="./Advanced%20SQL%20Puzzles/Advanced%20SQL%20Puzzles.pdf" target="_blank">Download Puzzles PDF</a>
+            </div>
+        </header>
+
+        <h2 class="section-title">Core Sections</h2>
+        <div class="grid">
+            <div class="card">
+                <h2>Advanced SQL Puzzles <span class="badge">55 Puzzles</span></h2>
+                <p>Complete DDL scripts, problem descriptions, and set-based T-SQL solutions for complex interview and engineering problems.</p>
+                <div class="card-links">
+                    <a href="./Advanced%20SQL%20Puzzles/Advanced%20SQL%20Puzzles%20DDL.sql">View DDL Script</a>
+                    <a href="./Advanced%20SQL%20Puzzles/Advanced%20SQL%20Puzzles%20Solutions.sql">View Solutions</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Database Tips & Tricks <span class="badge">Utilities</span></h2>
+                <p>Enterprise T-SQL utilities: Deterministic calendar dimensions, high-precision date differences, dynamic PIVOT procedures, and data profiling.</p>
+                <div class="card-links">
+                    <a href="./Database%20Tips%20and%20Tricks/Calendar%20Table/">Calendar Table</a>
+                    <a href="./Database%20Tips%20and%20Tricks/Pivoting%20Data/">Dynamic Pivot</a>
+                    <a href="./Database%20Tips%20and%20Tricks/Data%20Profiling/">Data Profiling</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Database Writings <span class="badge">In-Depth</span></h2>
+                <p>Technical papers and SQL statements covering SQL Joins, three-valued logic, behavior of NULLs, and foundational database concepts.</p>
+                <div class="card-links">
+                    <a href="./Database%20Writings/Advanced%20SQL%20Joins/">Advanced Joins</a>
+                    <a href="./Database%20Writings/Behavior%20Of%20Nulls/">Behavior of Nulls</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Microsoft Azure <span class="badge">Cloud Demos</span></h2>
+                <p>Azure Data Factory metadata ingestion patterns and Databricks Spark Hive integration demos with sample CSVs and DDLs.</p>
+                <div class="card-links">
+                    <a href="./Microsoft%20Azure/Data%20Factory%20Metadata%20Demo/">ADF Metadata Demo</a>
+                    <a href="./Microsoft%20Azure/Databricks%20Spark%20Hive%20Demo/">Databricks Spark Demo</a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">55 Advanced Puzzles Directory</h2>
+        <div class="puzzles-list">
+            <input type="text" id="puzzleSearch" class="search-box" placeholder="Search puzzles (e.g., Recursion, Gaps, PIVOT, Median)..." onkeyup="filterPuzzles()">
+            <div class="puzzle-grid" id="puzzleGrid">
+                <div class="puzzle-item"><span class="num">#1</span> Shopping Carts</div>
+                <div class="puzzle-item"><span class="num">#2</span> Managers and Employees</div>
+                <div class="puzzle-item"><span class="num">#3</span> Fiscal Year Table Constraints</div>
+                <div class="puzzle-item"><span class="num">#4</span> Two Predicates</div>
+                <div class="puzzle-item"><span class="num">#5</span> Phone Directory</div>
+                <div class="puzzle-item"><span class="num">#6</span> Workflow Steps</div>
+                <div class="puzzle-item"><span class="num">#7</span> Mission to Mars</div>
+                <div class="puzzle-item"><span class="num">#8</span> Workflow Cases</div>
+                <div class="puzzle-item"><span class="num">#9</span> Matching Sets</div>
+                <div class="puzzle-item"><span class="num">#10</span> Mean, Median, Mode & Range</div>
+                <div class="puzzle-item"><span class="num">#11</span> Permutations</div>
+                <div class="puzzle-item"><span class="num">#12</span> Average Days</div>
+                <div class="puzzle-item"><span class="num">#13</span> Inventory Tracking</div>
+                <div class="puzzle-item"><span class="num">#14</span> Indeterminate Process Log</div>
+                <div class="puzzle-item"><span class="num">#15</span> Group Concatenation</div>
+                <div class="puzzle-item"><span class="num">#16</span> Reciprocals</div>
+                <div class="puzzle-item"><span class="num">#17</span> De-grouping</div>
+                <div class="puzzle-item"><span class="num">#18</span> Seating Chart</div>
+                <div class="puzzle-item"><span class="num">#19</span> Back to the Future</div>
+                <div class="puzzle-item"><span class="num">#20</span> Price Points</div>
+                <div class="puzzle-item"><span class="num">#21</span> Table Differences</div>
+                <div class="puzzle-item"><span class="num">#22</span> Occurrences</div>
+                <div class="puzzle-item"><span class="num">#23</span> Divide in Half</div>
+                <div class="puzzle-item"><span class="num">#24</span> Page Views</div>
+                <div class="puzzle-item"><span class="num">#25</span> Top Vendors</div>
+                <div class="puzzle-item"><span class="num">#26</span> Previous Years Sales</div>
+                <div class="puzzle-item"><span class="num">#27</span> Delete the Duplicates</div>
+                <div class="puzzle-item"><span class="num">#28</span> Fill the Gaps</div>
+                <div class="puzzle-item"><span class="num">#29</span> Count the Groupings</div>
+                <div class="puzzle-item"><span class="num">#30</span> Select Star</div>
+                <div class="puzzle-item"><span class="num">#31</span> Second Highest</div>
+                <div class="puzzle-item"><span class="num">#32</span> First and Last</div>
+                <div class="puzzle-item"><span class="num">#33</span> Deadlines</div>
+                <div class="puzzle-item"><span class="num">#34</span> Specific Exclusion</div>
+                <div class="puzzle-item"><span class="num">#35</span> International vs Domestic</div>
+                <div class="puzzle-item"><span class="num">#36</span> Traveling Salesman</div>
+                <div class="puzzle-item"><span class="num">#37</span> Group Criteria Keys</div>
+                <div class="puzzle-item"><span class="num">#38</span> Reporting Elements</div>
+                <div class="puzzle-item"><span class="num">#39</span> Prime Numbers</div>
+                <div class="puzzle-item"><span class="num">#40</span> Sort Order</div>
+                <div class="puzzle-item"><span class="num">#41</span> Associate IDs</div>
+                <div class="puzzle-item"><span class="num">#42</span> Mutual Friends</div>
+                <div class="puzzle-item"><span class="num">#43</span> Unbounded Preceding</div>
+                <div class="puzzle-item"><span class="num">#44</span> Slowly Changing Dimension I</div>
+                <div class="puzzle-item"><span class="num">#45</span> Slowly Changing Dimension II</div>
+                <div class="puzzle-item"><span class="num">#46</span> Positive Account Balances</div>
+                <div class="puzzle-item"><span class="num">#47</span> Work Schedule</div>
+                <div class="puzzle-item"><span class="num">#48</span> Consecutive Sales</div>
+                <div class="puzzle-item"><span class="num">#49</span> Sum of Hex Values</div>
+                <div class="puzzle-item"><span class="num">#50</span> Clarification of Terms</div>
+                <div class="puzzle-item"><span class="num">#51</span> Primary and Secondary Keys</div>
+                <div class="puzzle-item"><span class="num">#52</span> Phone Numbers Unpivot</div>
+                <div class="puzzle-item"><span class="num">#53</span> Spouse Pairings</div>
+                <div class="puzzle-item"><span class="num">#54</span> Winning Numbers</div>
+                <div class="puzzle-item"><span class="num">#55</span> Table Audit</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Advanced SQL Puzzles Repository &bull; Maintained by <a href="https://advancedsqlpuzzles.com" target="_blank" rel="noopener">Scott Peters</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function filterPuzzles() {
+            const input = document.getElementById('puzzleSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.puzzle-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(input) ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
+

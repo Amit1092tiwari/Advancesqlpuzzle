@@ -1,4 +1,4 @@
-ALTER FUNCTION dbo.FnDateDiffPartsChar(@DateTime1 AS DATETIME2, @DateTime2 AS DATETIME2) 
+CREATE OR ALTER FUNCTION dbo.FnDateDiffPartsChar(@DateTime1 AS DATETIME2, @DateTime2 AS DATETIME2) 
 RETURNS VARCHAR(1000)
 /*
 #####################################################################################################
@@ -11,7 +11,7 @@ SELECT dbo.FnDateDiffPartsChar('20110619 00:00:00.0000001', '20110619 00:00:00.0
 
 SELECT dbo.FnDateDiffPartsChar('20171231', '20160101 00:00:00.0000000');
 
-SELECT dbo.FnDateDiffPartsChar('20170518 00:00:00.0000001','20110619 00:00:00.1110000') AS;
+SELECT dbo.FnDateDiffPartsChar('20170518 00:00:00.0000001','20110619 00:00:00.1110000');
 
 #####################################################################################################
 */
@@ -65,40 +65,25 @@ BEGIN
                 -   (CAST(1000000000 AS BIGINT) * DATEDIFF(ss, '00:00', Time1) + DATEPART(ns, Time1))
             )) AS A2(NanoSecondDifference)
     )
-    SELECT  /*YearDifference,
-            MonthDifference,
-            DayDifference,
-            MinuteDifference,
-            SecondDifference,
-            NanoDifference,*/
-    
-            @IntervalString = 
-            
+    SELECT  @IntervalString = 
             (CASE   WHEN    YearDifference <> 0 
                     THEN    CONCAT(YearDifference,'y ',MonthDifference, 'm ', DayDifference, 'd ', HourDifference, 'h ', MinuteDifference, 'm ', SecondDifference, 's ', NanoDifference, 'n') 
-                    --ELSE
                     WHEN    MonthDifference <> 0 
                     THEN    CONCAT(MonthDifference, 'm ', DayDifference, 'd ', HourDifference, 'h ', MinuteDifference, 'm ', SecondDifference, 's ', NanoDifference, 'n') 
-                    --ELSE
                     WHEN    DayDifference <> 0 
                     THEN    CONCAT(DayDifference, 'd ', HourDifference, 'h ', MinuteDifference, 'm ', SecondDifference, 's ', NanoDifference, 'n') 
-                    --ELSE
                     WHEN    HourDifference <> 0 
                     THEN    CONCAT(HourDifference, 'h ', MinuteDifference, 'm ', SecondDifference, 's ', NanoDifference, 'n') 
-                    --ELSE
                     WHEN    MinuteDifference <> 0 
                     THEN    CONCAT(MinuteDifference, 'm ', SecondDifference, 's ', NanoDifference, 'n') 
-                    --ELSE                                  
                     WHEN    SecondDifference <> 0 
-                    THEN    CONCAT(SecondDifference, 's, ', NanoDifference, 'n') 
-                    --ELSE
+                    THEN    CONCAT(SecondDifference, 's ', NanoDifference, 'n') 
                     WHEN    NanoDifference <> 0 
                     THEN    CONCAT(NanoDifference, 'n') 
-                    ELSE 'Error'
+                    ELSE    '0s'
                     END)                
     FROM    cte_DateDifference;
 
-    --PRINT @IntervalString;
     RETURN @IntervalString;
     
 END;

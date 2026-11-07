@@ -13,5 +13,5 @@ Example csv files for the demo
 Databricks workspace containing the notebooks used in the demo
 
 #### SuppliersAndPartsDDL.sql
-Create schmea and create table statements to be executed in SQL Server
+Create schema and create table statements to be executed in SQL Server (source database for Databricks ingestion)
 
