@@ -2613,7 +2613,8 @@ INSERT INTO #ProductsB VALUES
 ('Dingbat',9);
 GO
 
---Matches In both tables
+--Solution 1
+--SET Operators & Intermediate Tables
 SELECT  *
 INTO    #Results1
 FROM    #ProductsA
@@ -2667,6 +2668,22 @@ UNION
 SELECT  'Quantities in Table A and Table B do not match' AS [Type],
         ProductName
 FROM    #Results4;
+
+--Solution 2
+--Single-Pass FULL OUTER JOIN (Enterprise Set-Based Approach)
+SELECT  CASE 
+            WHEN a.ProductName IS NOT NULL AND b.ProductName IS NOT NULL AND a.Quantity = b.Quantity
+                THEN 'Matches In both tables'
+            WHEN a.ProductName IS NOT NULL AND b.ProductName IS NULL
+                THEN 'Product does not exist in Table B'
+            WHEN a.ProductName IS NULL AND b.ProductName IS NOT NULL
+                THEN 'Product does not exist in Table A'
+            WHEN a.ProductName IS NOT NULL AND b.ProductName IS NOT NULL AND a.Quantity <> b.Quantity
+                THEN 'Quantities in Table A and Table B do not match'
+        END AS [Type],
+        COALESCE(a.ProductName, b.ProductName) AS ProductName
+FROM    #ProductsA a FULL OUTER JOIN
+        #ProductsB b ON a.ProductName = b.ProductName;
 
 /*----------------------------------------------------
 The End
